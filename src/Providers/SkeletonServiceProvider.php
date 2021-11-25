@@ -7,22 +7,26 @@ use Illuminate\Support\ServiceProvider;
 class SkeletonServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-    }
-
-    /**
      * Bootstrap any application services.
      *
      * @return void
      */
     public function boot()
     {
-        dump(1);
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
+    }
+
+    /**
+     * Register the commands of the package.
+     * 
+     * @return void
+     */ 
+    protected function registerCommands()
+    {
+        $this->commands([
+            \Bit\Skeleton\Console\Commands\ServiceMakeCommand::class,
+        ]);
     }
 }
