@@ -2,6 +2,7 @@
 
 namespace Bit\Skeleton\Providers;
 
+use Bit\Skeleton\Entities\Service;
 use Illuminate\Support\ServiceProvider;
 
 class SkeletonServiceProvider extends ServiceProvider
@@ -13,6 +14,8 @@ class SkeletonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Service::boot();
+        
         if ($this->app->runningInConsole()) {
             $this->registerCommands();
         }
