@@ -47,6 +47,7 @@ class ServiceMakeCommand extends GeneratorCommand
         $this->registerServiceProviders();
         $this->makeFeatureDirectory();
         $this->registerRoutes();
+        $this->makeHttpDirectory();
 
         $this->info('Service created successfully!');
     }
@@ -124,5 +125,17 @@ class ServiceMakeCommand extends GeneratorCommand
                 'service' => $name
             ])
         );
+    }
+
+    /**
+     * Make the HTTP directory for the service.
+     * 
+     * @return void
+     */
+    protected function makeHttpDirectory()
+    {
+        $this->files->makeDirectory($this->basepath('Http'));
+        $this->files->makeDirectory($this->basepath('Http/Controllers'));
+        $this->files->makeDirectory($this->basepath('Http/Middleware'));
     }
 }
