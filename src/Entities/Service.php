@@ -41,4 +41,14 @@ class Service extends Entity
     {
         return static::$services->has(compact('name'));
     }
+
+    /**
+     * Get all services of the application
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    public static function all()
+    {
+        return static::$services;
+    }
 }

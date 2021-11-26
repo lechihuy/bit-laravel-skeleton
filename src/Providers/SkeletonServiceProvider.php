@@ -30,6 +30,7 @@ class SkeletonServiceProvider extends ServiceProvider
     {
         $this->commands([
             \Bit\Skeleton\Console\Commands\ServiceMakeCommand::class,
+            \Bit\Skeleton\Console\Commands\ServiceListCommand::class,
         ]);
     }
 }
