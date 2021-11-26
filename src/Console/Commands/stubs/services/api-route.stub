@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/features/{{ service }}', function () {
+Route::get('/features/{{ kebab:service }}', function () {
     return response()->json(['message' => '{{ service }} feature here!']);
 });
