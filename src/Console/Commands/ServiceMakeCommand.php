@@ -13,7 +13,7 @@ class ServiceMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'bit.make:service {name}';
+    protected $signature = 'bit.service:make {name}';
 
     /**
      * The console command description.
