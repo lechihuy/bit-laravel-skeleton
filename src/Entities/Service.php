@@ -3,6 +3,7 @@
 namespace Bit\Skeleton\Entities;
 
 use Bit\Skeleton\Entities\Entity;
+use Bit\Skeleton\Units\Service as Unit;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,8 +27,9 @@ class Service extends Entity
         static::$services = collect();
 
         foreach ($paths as $path) {
-            $service = (new Filesystem)->basename($path);
-            static::$services->push(compact('service', 'path'));
+            $name = (new Filesystem)->basename($path);
+
+            static::$services->push(new Unit($name, $path));
         }
     }
 
@@ -39,7 +41,9 @@ class Service extends Entity
      */
     public static function has($name)
     {
-        return static::$services->has(compact('name'));
+        return static::$services->filter(function($service) use ($name) {
+            return $service->name === $name;
+        })->first();
     }
 
     /**
@@ -50,5 +54,16 @@ class Service extends Entity
     public static function all()
     {
         return static::$services;
+    }
+
+    /**
+     * Delete a service with the given name.
+     * 
+     * @param  string  $name
+     * @return void
+     */
+    public static function delete($name)
+    {
+        (new Filesystem)->deleteDirectory(service_path($name));
     }
 }
