@@ -34,7 +34,7 @@ class ServiceMakeCommand extends Command
             
             Service::generate($name);
             $this->info('Service created successfully!');
-            $this->info('Please register the service in your code.');
+            $this->info('Let\'s register the service in your code to get started');
 
             return Command::SUCCESS;
         } catch (Exception $e) {

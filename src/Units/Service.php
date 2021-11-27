@@ -3,6 +3,7 @@
 namespace Bit\Skeleton\Units;
 
 use Bit\Skeleton\Units\Unit;
+use Illuminate\Support\ServiceProvider;
 
 class Service extends Unit
 {
@@ -34,6 +35,27 @@ class Service extends Unit
     }
 
     /**
+     * Determine if the service is enabled.
+     * 
+     * @return bool
+     */
+    public function enabled()
+    {
+        return $this->getProvider();
+    }
+
+    /**
+     * Get the provider of the service.
+     * 
+     * @param  string|null  $path
+     * @return \Illuminate\Support\ServiceProvider|null
+     */
+    public function getProvider()
+    {
+        return app()->getProvider("App\\Services\\{$this->name}\\Providers\\{$this->name}ServiceProvider");
+    }
+
+    /**
      * Serilize the service to array.
      * 
      * @return array
@@ -43,6 +65,7 @@ class Service extends Unit
         return [
             'name' => $this->name,
             'path' => $this->path,
+            'enabled' => $this->enabled(),
         ];
     }
 }

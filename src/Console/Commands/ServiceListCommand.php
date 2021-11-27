@@ -35,10 +35,25 @@ class ServiceListCommand extends Command
         }
 
         $this->table(
-            ['Name', 'Path'],
-            Service::all()->toArray()
+            ['Name', 'Path', 'Enabled'],
+            $this->formatTableData(Service::all()->toArray())
         );
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Formating the table data.
+     * 
+     * @param  array  $data
+     * @return array
+     */
+    protected function formatTableData($data)
+    {
+        foreach ($data as $key => $service) {
+            $data[$key]['enabled'] = $data[$key]['enabled'] ? 'Yes' : 'No';
+        }
+
+        return $data;
     }
 }
