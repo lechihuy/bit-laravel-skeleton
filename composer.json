@@ -1,7 +1,7 @@
 {
-    "name": "lechihuy/bit-skeleton",
+    "name": "lechihuy/bit-laravel-skeleton",
     "description": "Building the Laravel Skeleton for your application was inspired by Lucid architecture.",
-    "homepage": "https://github.com/lechihuy/bit-skeleton",
+    "homepage": "https://github.com/lechihuy/bit-laravel-skeleton",
     "authors": [
         {
             "name": "Lê Chí Huy",
