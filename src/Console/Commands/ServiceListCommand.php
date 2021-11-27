@@ -24,13 +24,21 @@ class ServiceListCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
+        if (Service::isEmpty()) {
+            $this->error('No avaiable services!');
+
+            return Command::FAILURE;
+        }
+
         $this->table(
-            ['Service', 'Path'],
+            ['Name', 'Path'],
             Service::all()->toArray()
         );
+
+        return Command::SUCCESS;
     }
 }

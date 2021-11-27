@@ -2,11 +2,11 @@
 
 namespace Bit\Skeleton\Console\Commands;
 
-use Illuminate\Support\Str;
+use Exception;
+use Illuminate\Console\Command;
 use Bit\Skeleton\Entities\Service;
-use Bit\Skeleton\Console\Commands\GeneratorCommand;
 
-class ServiceMakeCommand extends GeneratorCommand
+class ServiceMakeCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -23,119 +23,24 @@ class ServiceMakeCommand extends GeneratorCommand
     protected $description = 'Create a new service.';
 
     /**
-     * The name of the service.
-     * 
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
-        $this->name = $this->argument('name');
-        $this->basepath = app_path("Services/{$this->name}");
+        try {
+            $name = $this->argument('name');
+            
+            Service::generate($name);
+            $this->info('Service created successfully!');
+            $this->info('Please register the service in your code.');
 
-        if (Service::has($this->name)) {
-            return $this->error('Service already exists!');
+            return Command::SUCCESS;
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+
+            return COMMAND::FAILURE;
         }
-
-        $this->makeServiceDirectory();
-        $this->registerServiceProviders();
-        $this->makeFeatureDirectory();
-        $this->registerRoutes();
-        $this->makeHttpDirectory();
-
-        $this->info('Service created successfully!');
-    }
-
-    /**
-     * Make the service directory.
-     * 
-     * @return void
-     */
-    protected function makeServiceDirectory()
-    {
-        $this->files->makeDirectory($this->basepath());
-    }
-
-    /**
-     * Make the feature directory for the service.
-     * 
-     * @return void
-     */
-    protected function makeFeatureDirectory()
-    {
-        $this->files->makeDirectory($this->basepath('Features'));
-    }
-
-    /**
-     * Register the service providers for the service.
-     * 
-     * @return void
-     */
-    protected function registerServiceProviders()
-    {
-        $name = $this->name;
-
-        $this->files->makeDirectory($this->basepath('Providers'));
-
-        $this->files->put(
-            $this->basepath("Providers/{$name}ServiceProvider.php"), 
-            $this->getStub('services/service-provider.stub', [
-                'service' => $name
-            ])
-        );
-
-        $this->files->put(
-            $this->basepath("Providers/RouteServiceProvider.php"), 
-            $this->getStub('services/route-service-provider.stub', [
-                'service' => $name
-            ])
-        );
-    }
-
-    /**
-     * Register the providers for the service.
-     * 
-     * @return void
-     */
-    protected function registerRoutes()
-    {
-        $name = $this->name;
-        $kebabName = Str::kebab($name);
-
-        $this->files->makeDirectory($this->basepath('routes'));
-
-        $this->files->put(
-            $this->basepath("routes/web.php"), 
-            $this->getStub('services/web-route.stub', [
-                'kebab:service' => $kebabName,
-                'service' => $name
-            ])
-        );
-
-        $this->files->put(
-            $this->basepath("routes/api.php"), 
-            $this->getStub('services/api-route.stub', [
-                'kebab:service' => $kebabName,
-                'service' => $name
-            ])
-        );
-    }
-
-    /**
-     * Make the HTTP directory for the service.
-     * 
-     * @return void
-     */
-    protected function makeHttpDirectory()
-    {
-        $this->files->makeDirectory($this->basepath('Http'));
-        $this->files->makeDirectory($this->basepath('Http/Controllers'));
-        $this->files->makeDirectory($this->basepath('Http/Middleware'));
     }
 }

@@ -1,12 +1,19 @@
 <?php
 
-namespace Bit\Skeleton\Console\Commands;
+namespace Bit\Skeleton\Generators;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class GeneratorCommand extends Command
+abstract class Generator
 {
+    /**
+     * The name of the generator.
+     * 
+     * @var string
+     */
+    protected $name;
+
      /**
      * The base path of the generator.
      * 
@@ -29,8 +36,6 @@ class GeneratorCommand extends Command
      */
     public function __construct(Filesystem $files)
     {
-        parent::__construct();
-        
         $this->files = $files;
     }
 

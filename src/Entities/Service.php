@@ -3,9 +3,10 @@
 namespace Bit\Skeleton\Entities;
 
 use Bit\Skeleton\Entities\Entity;
-use Bit\Skeleton\Units\Service as Unit;
 use Illuminate\Filesystem\Filesystem;
+use Bit\Skeleton\Units\Service as Unit;
 use Illuminate\Support\Facades\Storage;
+use Bit\Skeleton\Generators\ServiceGenerator;
 
 class Service extends Entity
 {
@@ -23,13 +24,15 @@ class Service extends Entity
      */
     public static function boot()
     {
-        $paths = (new Filesystem)->directories(service_path());
         static::$services = collect();
+
+        (new Filesystem)->ensureDirectoryExists(service_path());
+        $paths = (new Filesystem)->directories(service_path());
 
         foreach ($paths as $path) {
             $name = (new Filesystem)->basename($path);
 
-            static::$services->push(new Unit($name, $path));
+            static::add(compact('name', 'path'));
         }
     }
 
@@ -65,5 +68,50 @@ class Service extends Entity
     public static function delete($name)
     {
         (new Filesystem)->deleteDirectory(service_path($name));
+    }
+
+    /**
+     * Determine if not any available services.
+     * 
+     * @return bool
+     */
+    public static function isEmpty()
+    {
+        return static::$services->isEmpty();
+    }
+
+    /**
+     * Re-booting all services for the application
+     * 
+     * @return void
+     */
+    public static function reboot()
+    {
+        static::boot();
+    }
+
+    /**
+     * Generate a new service with the given name.
+     * 
+     * @param  string  $name
+     * @return void
+     */
+    public static function generate($name)
+    {
+        $path = service_path($name);
+
+        app(ServiceGenerator::class)->generate($name);
+        static::add(compact('name', 'path'));
+    }
+
+    /**
+     * Add the service to the services collection.
+     * 
+     * @param  array  $service
+     * @return void
+     */
+    public static function add($service)
+    {
+        static::$services->push(new Unit(...$service));
     }
 }
