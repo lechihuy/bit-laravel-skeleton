@@ -3,11 +3,8 @@
 namespace Bit\Skeleton\Tests\Cli;
 
 use Bit\Skeleton\Tests\TestCase;
-use Bit\Skeleton\Entities\Service;
+use Bit\Skeleton\Support\Service;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Console\Events\CommandFinished;
 
 class ServicesTest extends TestCase
 {
