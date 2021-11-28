@@ -39,6 +39,7 @@ class Service extends Entity
     {
         $this->name = $name;
         $this->path = service_path($name);
+        $this->features = collect();
     }
 
     /**
@@ -85,7 +86,7 @@ class Service extends Entity
      */
     public function features()
     {
-        return $this->features;
+        return $this->features->all();
     }
 
     /**
@@ -96,10 +97,8 @@ class Service extends Entity
     public function bootFeatures()
     {
         $featurePath = service_path($this->name, 'Features');
-
         (new Filesystem)->ensureDirectoryExists($featurePath);
         $featureFiles = (new Filesystem)->allFiles($featurePath);
-        $this->features = collect();
 
         foreach ($featureFiles as $file) {
             $this->features->push(new Feature(
@@ -117,7 +116,7 @@ class Service extends Entity
      */
     public function hasFeature(string $name): bool
     {
-        return (bool) $this->features()->filter(fn($feature) => $feature->name === $name)
+        return (bool) $this->features->filter(fn($feature) => $feature->name === $name)
             ->first();
     }
 }
