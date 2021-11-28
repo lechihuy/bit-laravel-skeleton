@@ -29,6 +29,9 @@ class ServiceGenerator extends Generator
         $this->makeFeatureDirectory();
         $this->registerRoutes();
         $this->makeHttpDirectory();
+
+        if (app()->runningUnitTests())
+            Service::reboot();
     }
 
     /**

@@ -3,7 +3,12 @@
 namespace Bit\Skeleton\Generators;
 
 use Exception;
+use InvalidArgumentException;
+use Bit\Skeleton\Support\Feature;
+use Bit\Skeleton\Support\Service;
 use Bit\Skeleton\Generators\Generator;
+use Bit\Skeleton\Exceptions\EntityNotFoundException;
+use Bit\Skeleton\Exceptions\EntityAlreadyExistsException;
 
 class FeatureGenerator extends Generator
 {
@@ -34,9 +39,12 @@ class FeatureGenerator extends Generator
             throw new EntityNotFoundException("Service [{$service}] does not exist!");
 
         if (Feature::has($name, $service))
-            throw new EntityAlreadyExistsException("Feature [{$service}] already exists!");
+            throw new EntityAlreadyExistsException("Feature already exists!");
 
         $this->makeFeatureFile();
+
+        if (app()->runningUnitTests())
+            Service::reboot();
     }
 
     /**

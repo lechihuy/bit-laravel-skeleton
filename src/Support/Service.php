@@ -29,7 +29,6 @@ class Service
     public static function boot()
     {
         static::$services = collect();
-
         (new Filesystem)->ensureDirectoryExists(service_path());
         $servicePaths = (new Filesystem)->directories(service_path());
 
@@ -116,7 +115,6 @@ class Service
         $path = service_path($name);
 
         app(ServiceGenerator::class)->generate($name);
-        static::add(new Entity($name));
     }
 
     /**

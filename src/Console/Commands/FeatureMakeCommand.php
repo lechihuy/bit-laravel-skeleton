@@ -2,12 +2,8 @@
 
 namespace Bit\Skeleton\Console\Commands;
 
-use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Bit\Skeleton\Support\Feature;
-use Bit\Skeleton\Support\Service;
-use Bit\Skeleton\Exceptions\EntityNotFoundException;
-use Bit\Skeleton\Exceptions\EntityAlreadyExistsException;
 
 class FeatureMakeCommand extends Command
 {
@@ -40,7 +36,7 @@ class FeatureMakeCommand extends Command
 
             Feature::generate($name, $service);
             $this->info('Feature created successfully!');
-
+            
             return Command::SUCCESS;
         }, function($e) {
             $this->error($e->getMessage());
