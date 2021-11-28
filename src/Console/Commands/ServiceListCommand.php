@@ -2,8 +2,8 @@
 
 namespace Bit\Skeleton\Console\Commands;
 
+use Bit\Skeleton\Support\Service;
 use Illuminate\Console\Command;
-use Bit\Skeleton\Entities\Service;
 
 class ServiceListCommand extends Command
 {
