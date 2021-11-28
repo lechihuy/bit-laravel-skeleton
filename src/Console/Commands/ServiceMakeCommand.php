@@ -2,9 +2,8 @@
 
 namespace Bit\Skeleton\Console\Commands;
 
-use Exception;
+use Bit\Skeleton\Support\Service;
 use Illuminate\Console\Command;
-use Bit\Skeleton\Entities\Service;
 
 class ServiceMakeCommand extends Command
 {
@@ -29,18 +28,19 @@ class ServiceMakeCommand extends Command
      */
     public function handle()
     {
-        try {
-            $name = $this->argument('name');
-            
+        $name = $this->argument('name');
+        
+        return rescue(function() use ($name ) {
             Service::generate($name);
+
             $this->info('Service created successfully!');
             $this->info('Let\'s register the service in your code to get started');
 
             return Command::SUCCESS;
-        } catch (Exception $e) {
+        }, function($e) {
             $this->error($e->getMessage());
 
-            return COMMAND::FAILURE;
-        }
+            return Command::FAILURE;
+        });
     }
 }
