@@ -4,114 +4,120 @@ namespace Bit\Skeleton\Entities;
 
 use Bit\Skeleton\Entities\Entity;
 use Illuminate\Filesystem\Filesystem;
-use Bit\Skeleton\Units\Service as Unit;
-use Illuminate\Support\Facades\Storage;
-use Bit\Skeleton\Generators\ServiceGenerator;
 
 class Service extends Entity
 {
     /**
-     * All services of the application.
+     * The name of service.
+     * 
+     * @var string
+     */
+    public $name;
+
+    /**
+     * The storage path of service.
+     * 
+     * @var string
+     */
+    public $path;
+
+    /**
+     * Features belongs to the service.
+     * 
+     * @var \Illuminate\Support\Collection
+     */
+    protected $features;
+
+    /**
+     * Create a new service.
+     * 
+     * @param  string  $name
+     * @param  string  $path
+     * @return void
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+        $this->path = service_path($name);
+    }
+
+    /**
+     * Determine if the service is enabled.
+     * 
+     * @return bool
+     */
+    public function enabled(): bool
+    {
+        return (bool) $this->getProvider();
+    }
+
+    /**
+     * Get the provider of the service.
+     * 
+     * @param  string|null  $path
+     * @return \Illuminate\Support\ServiceProvider|null
+     */
+    public function getProvider()
+    {
+        return app()->getProvider(
+            service_classname($this->name, 'Providers', $this->name.'ServiceProvider')
+        );
+    }
+
+    /**
+     * Serilize the service to array.
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'name' => $this->name,
+            'path' => $this->path,
+            'enabled' => $this->enabled(),
+        ];
+    }
+
+    /**
+     * Get all features belongs to the service.
      * 
      * @return \Illuminate\Support\Collection
      */
-    protected static $services;
+    public function features()
+    {
+        return $this->features;
+    }
 
     /**
-     * Booting all services for the application
+     * Register all features for the service.
      * 
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
-    public static function boot()
+    public function bootFeatures()
     {
-        static::$services = collect();
+        $featurePath = service_path($this->name, 'Features');
 
-        (new Filesystem)->ensureDirectoryExists(service_path());
-        $paths = (new Filesystem)->directories(service_path());
+        (new Filesystem)->ensureDirectoryExists($featurePath);
+        $featureFiles = (new Filesystem)->allFiles($featurePath);
+        $this->features = collect();
 
-        foreach ($paths as $path) {
-            $name = (new Filesystem)->basename($path);
-
-            static::add(compact('name', 'path'));
+        foreach ($featureFiles as $file) {
+            $this->features->push(new Feature(
+                name: basename($file->getFileName(), '.'.$file->getExtension()),
+                service: $this->name
+            ));
         }
     }
 
     /**
-     * Determine if the service exists.
+     * Determine if the feature belongs to the service.
      * 
      * @param  string  $name
      * @return bool
      */
-    public static function has($name)
+    public function hasFeature(string $name): bool
     {
-        return static::$services->filter(function($service) use ($name) {
-            return $service->name === $name;
-        })->first();
-    }
-
-    /**
-     * Get all services of the application
-     * 
-     * @return \Illuminate\Support\Collection
-     */
-    public static function all()
-    {
-        return static::$services;
-    }
-
-    /**
-     * Delete a service with the given name.
-     * 
-     * @param  string  $name
-     * @return void
-     */
-    public static function delete($name)
-    {
-        (new Filesystem)->deleteDirectory(service_path($name));
-    }
-
-    /**
-     * Determine if not any available services.
-     * 
-     * @return bool
-     */
-    public static function isEmpty()
-    {
-        return static::$services->isEmpty();
-    }
-
-    /**
-     * Re-booting all services for the application
-     * 
-     * @return void
-     */
-    public static function reboot()
-    {
-        static::boot();
-    }
-
-    /**
-     * Generate a new service with the given name.
-     * 
-     * @param  string  $name
-     * @return void
-     */
-    public static function generate($name)
-    {
-        $path = service_path($name);
-
-        app(ServiceGenerator::class)->generate($name);
-        static::add(compact('name', 'path'));
-    }
-
-    /**
-     * Add the service to the services collection.
-     * 
-     * @param  array  $service
-     * @return void
-     */
-    public static function add($service)
-    {
-        static::$services->push(new Unit(...$service));
+        return (bool) $this->features()->filter(fn($feature) => $feature->name === $name)
+            ->first();
     }
 }
