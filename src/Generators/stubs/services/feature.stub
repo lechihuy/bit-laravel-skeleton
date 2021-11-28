@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Services\{{ service }}\Features;
+
+use Bit\Skeleton\Concepts\Feature;
+
+class {{ feature }} extends Feature
+{
+    /**
+     * Execute the feature.
+     * 
+     * @return mixed
+    */ 
+    public function handle()
+    {
+        //
+    }
+}

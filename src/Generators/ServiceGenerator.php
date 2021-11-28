@@ -4,13 +4,14 @@ namespace Bit\Skeleton\Generators;
 
 use Exception;
 use Illuminate\Support\Str;
-use Bit\Skeleton\Entities\Service;
+use Bit\Skeleton\Support\Service;
 use Bit\Skeleton\Generators\Generator;
+use Bit\Skeleton\Exceptions\EntityAlreadyExistsException;
 
 class ServiceGenerator extends Generator
 {
     /**
-     * Execute the generate command    
+     * Execute the generate command.    
      * 
      * @param  string  $name
      * @return void
@@ -18,19 +19,16 @@ class ServiceGenerator extends Generator
     public function generate($name)
     {
         $this->name = $name;
-        $this->basepath = app_path("Services/{$this->name}");
+        $this->basepath = service_path($this->name);
 
-        if (Service::has($this->name)) {
-            throw new Exception('Service already exists!');
-        }
+        if (Service::has($this->name))
+            throw new EntityAlreadyExistsException('Service already exists!');
 
         $this->makeServiceDirectory();
         $this->registerServiceProviders();
         $this->makeFeatureDirectory();
         $this->registerRoutes();
         $this->makeHttpDirectory();
-
-        // Service::add();
     }
 
     /**
