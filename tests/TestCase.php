@@ -3,8 +3,10 @@
 namespace Bit\Skeleton\Tests;
 
 use Mockery;
-use Bit\Skeleton\Providers\SkeletonServiceProvider;
+use Bit\Skeleton\Support\Service;
+use Illuminate\Filesystem\Filesystem;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Bit\Skeleton\Providers\SkeletonServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,6 +17,7 @@ abstract class TestCase extends BaseTestCase
 
     public function tearDown(): void
     {
+        (new Filesystem)->cleanDirectory(service_path());
         Mockery::close();
     }
 
@@ -27,6 +30,6 @@ abstract class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        // perform environment setup
+        //
     }
 }
