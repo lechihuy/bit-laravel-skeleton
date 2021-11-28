@@ -2,7 +2,7 @@
 
 namespace Bit\Skeleton\Providers;
 
-use Bit\Skeleton\Entities\Service;
+use Bit\Skeleton\Support\Service;
 use Illuminate\Support\ServiceProvider;
 
 class SkeletonServiceProvider extends ServiceProvider
@@ -32,6 +32,8 @@ class SkeletonServiceProvider extends ServiceProvider
             \Bit\Skeleton\Console\Commands\ServiceMakeCommand::class,
             \Bit\Skeleton\Console\Commands\ServiceListCommand::class,
             \Bit\Skeleton\Console\Commands\ServiceDeleteCommand::class,
+
+            \Bit\Skeleton\Console\Commands\FeatureMakeCommand::class,
         ]);
     }
 }
