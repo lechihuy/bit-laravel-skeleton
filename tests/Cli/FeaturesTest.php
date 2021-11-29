@@ -14,6 +14,14 @@ class FeaturesTest extends TestCase
             ->assertSuccessful();    
     }
 
+    public function test_cannot_execute_feature_make_command_when_missing_service_option()
+    {
+        $this->artisan('bit.service:make FooBar');
+        $this->artisan('bit.feature:make FooFeature')
+            ->expectsOutput('Service option is required!')
+            ->assertFailed();    
+    }
+
     public function test_cannot_execute_feature_make_command_when_it_already_exists()
     {
         $this->artisan('bit.service:make FooBar');
