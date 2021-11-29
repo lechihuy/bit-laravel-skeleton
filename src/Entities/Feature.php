@@ -33,7 +33,7 @@ class Feature extends Entity
      * Create a new feature.
      * 
      * @param  string  $name
-     * @param  string  $path
+     * @param  string  $service
      * @return void
      * 
      * @throws \Bit\Skeleton\Exceptions\EntityNotFoundException
