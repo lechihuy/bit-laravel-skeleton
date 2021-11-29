@@ -2,6 +2,7 @@
 
 namespace Bit\Skeleton\Console\Commands;
 
+use InvalidArgumentException;
 use Illuminate\Console\Command;
 use Bit\Skeleton\Support\Feature;
 
@@ -33,6 +34,9 @@ class FeatureMakeCommand extends Command
         return rescue(function() {
             $name = $this->argument('name');
             $service = $this->option('service');
+
+            if (is_null($service))
+                throw new InvalidArgumentException('Service option is required!');
 
             Feature::generate($name, $service);
             $this->info('Feature created successfully!');
