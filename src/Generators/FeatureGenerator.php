@@ -3,7 +3,6 @@
 namespace Bit\Skeleton\Generators;
 
 use Exception;
-use InvalidArgumentException;
 use Bit\Skeleton\Support\Feature;
 use Bit\Skeleton\Support\Service;
 use Bit\Skeleton\Generators\Generator;
@@ -31,9 +30,6 @@ class FeatureGenerator extends Generator
         $this->name = $name;
         $this->service = $service;
         $this->basepath = service_path($service, 'Features');
-
-        if (is_null($service))
-            throw new InvalidArgumentException('Service option is required!');
 
         if (Service::doesntHave($service))
             throw new EntityNotFoundException("Service [{$service}] does not exist!");
