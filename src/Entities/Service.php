@@ -29,6 +29,13 @@ class Service extends Entity
     protected $features;
 
     /**
+     * Controllers belongs to the service.
+     * 
+     * @var \Illuminate\Support\Collection
+     */
+    protected $controllers;
+
+    /**
      * Create a new service.
      * 
      * @param  string  $name
@@ -40,6 +47,7 @@ class Service extends Entity
         $this->name = $name;
         $this->path = service_path($name);
         $this->features = collect();
+        $this->controllers = collect();
     }
 
     /**
@@ -90,6 +98,16 @@ class Service extends Entity
     }
 
     /**
+     * Get all controllers belongs to the service.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    public function controllers()
+    {
+        return $this->controllers->all();
+    }
+
+    /**
      * Register all features for the service.
      * 
      * @return \Illuminate\Support\Collection
@@ -109,6 +127,25 @@ class Service extends Entity
     }
 
     /**
+     * Register all controllers for the service.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    public function bootControllers()
+    {
+        $controllerPath = service_path($this->name, 'Http/Controllers');
+        (new Filesystem)->ensureDirectoryExists($controllerPath);
+        $controllerFiles = (new Filesystem)->allFiles($controllerPath);
+
+        foreach ($controllerFiles as $file) {
+            $this->controllers->push(new Feature(
+                name: basename($file->getFileName(), '.'.$file->getExtension()),
+                service: $this->name
+            ));
+        }
+    }
+
+    /**
      * Determine if the feature belongs to the service.
      * 
      * @param  string  $name
@@ -117,6 +154,18 @@ class Service extends Entity
     public function hasFeature(string $name): bool
     {
         return (bool) $this->features->filter(fn($feature) => $feature->name === $name)
+            ->first();
+    }
+
+    /**
+     * Determine if the controller belongs to the service.
+     * 
+     * @param  string  $name
+     * @return bool
+     */
+    public function hasController(string $name): bool
+    {
+        return (bool) $this->controllers->filter(fn($controller) => $controller->name === $name)
             ->first();
     }
 }

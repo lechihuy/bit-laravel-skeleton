@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Services\{{ service }}\Http\Controllers;
+
+use Bit\Skeleton\Concepts\Controller;
+
+class {{ controller }} extends Controller
+{
+    //
+}

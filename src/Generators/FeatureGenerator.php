@@ -17,7 +17,7 @@ class FeatureGenerator extends Generator
      * 
      * @var string
      */
-    public $service;
+    protected $service;
 
     /**
      * Execute the generate command.   

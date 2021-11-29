@@ -38,6 +38,7 @@ class Service
 
             static::add($entity);
             $entity->bootFeatures();
+            $entity->bootControllers();
         }
     }
 
