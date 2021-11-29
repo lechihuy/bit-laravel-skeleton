@@ -34,6 +34,8 @@ class SkeletonServiceProvider extends ServiceProvider
             \Bit\Skeleton\Console\Commands\ServiceDeleteCommand::class,
 
             \Bit\Skeleton\Console\Commands\FeatureMakeCommand::class,
+
+            \Bit\Skeleton\Console\Commands\ControllerMakeCommand::class,
         ]);
     }
 }
