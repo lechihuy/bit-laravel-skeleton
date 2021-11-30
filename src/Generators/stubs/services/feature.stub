@@ -7,6 +7,16 @@ use Bit\Skeleton\Concepts\Feature;
 class {{ feature }} extends Feature
 {
     /**
+     * Create a feature with arguments are received from the controller.
+     *
+     * @return void
+    */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
      * Execute the feature.
      * 
      * @return mixed
