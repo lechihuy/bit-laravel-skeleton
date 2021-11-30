@@ -36,7 +36,13 @@ class ServiceListCommand extends Command
 
         $this->table(
             ['Name', 'Path', 'Enabled'],
-            $this->formatTableData(Service::all()->toArray())
+            $this->formatTableData(
+                Service::list()->map(function($service) { 
+                    return collect($service)->only(
+                        'name', 'path', 'enabled'
+                    )->toArray();
+                })->toArray()
+            )
         );
 
         return Command::SUCCESS;
