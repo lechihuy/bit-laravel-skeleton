@@ -4,6 +4,7 @@ namespace Bit\Skeleton\Console\Commands;
 
 use InvalidArgumentException;
 use Illuminate\Console\Command;
+use Bit\Skeleton\Support\Service;
 use Bit\Skeleton\Support\Controller;
 
 class ControllerMakeCommand extends Command

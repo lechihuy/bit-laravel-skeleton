@@ -40,8 +40,8 @@ class Feature extends Entity
      */
     public function __construct($name, $service)
     {
-        if (Service::doesntHave($service))
-            throw new EntityNotFoundException("Service [{$service}] does not exist!");
+        // if (Service::doesntHave($service))
+        //     throw new EntityNotFoundException("Service [{$service}] does not exist!");
 
         $this->name = $name;
         $this->path = service_path($service, 'Features', $name.'.php');

@@ -3,6 +3,7 @@
 namespace Bit\Skeleton\Entities;
 
 use Bit\Skeleton\Entities\Entity;
+use Bit\Skeleton\Entities\Controller;
 use Illuminate\Filesystem\Filesystem;
 
 class Service extends Entity
@@ -46,8 +47,9 @@ class Service extends Entity
     {
         $this->name = $name;
         $this->path = service_path($name);
-        $this->features = collect();
-        $this->controllers = collect();
+
+        $this->loadFeatures();
+        $this->loadControllers();
     }
 
     /**
@@ -74,20 +76,6 @@ class Service extends Entity
     }
 
     /**
-     * Serilize the service to array.
-     * 
-     * @return array
-     */
-    public function toArray()
-    {
-        return [
-            'name' => $this->name,
-            'path' => $this->path,
-            'enabled' => $this->enabled(),
-        ];
-    }
-
-    /**
      * Get all features belongs to the service.
      * 
      * @return \Illuminate\Support\Collection
@@ -108,13 +96,15 @@ class Service extends Entity
     }
 
     /**
-     * Register all features for the service.
+     * Load all features for the service.
      * 
-     * @return \Illuminate\Support\Collection
+     * @return void
      */
-    public function bootFeatures()
+    protected function loadFeatures(): void
     {
+        $this->features = collect();
         $featurePath = service_path($this->name, 'Features');
+
         (new Filesystem)->ensureDirectoryExists($featurePath);
         $featureFiles = (new Filesystem)->allFiles($featurePath);
 
@@ -127,18 +117,20 @@ class Service extends Entity
     }
 
     /**
-     * Register all controllers for the service.
+     * Load all controllers for the service.
      * 
-     * @return \Illuminate\Support\Collection
+     * @return void
      */
-    public function bootControllers()
+    protected function loadControllers(): void
     {
+        $this->controllers = collect();
         $controllerPath = service_path($this->name, 'Http/Controllers');
+
         (new Filesystem)->ensureDirectoryExists($controllerPath);
         $controllerFiles = (new Filesystem)->allFiles($controllerPath);
 
         foreach ($controllerFiles as $file) {
-            $this->controllers->push(new Feature(
+            $this->controllers->push(new Controller(
                 name: basename($file->getFileName(), '.'.$file->getExtension()),
                 service: $this->name
             ));
@@ -167,5 +159,21 @@ class Service extends Entity
     {
         return (bool) $this->controllers->filter(fn($controller) => $controller->name === $name)
             ->first();
+    }
+
+    /**
+     * Serilize the service to array.
+     * 
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'path' => $this->path,
+            'enabled' => $this->enabled(),
+            'features' => $this->features(),
+            'controllers' => $this->controllers(),
+        ];
     }
 }

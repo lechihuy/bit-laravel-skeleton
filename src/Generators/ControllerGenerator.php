@@ -30,8 +30,6 @@ class ControllerGenerator extends Generator
         $this->service = $service;
         $this->basepath = service_path($service, 'Http/Controllers');
 
-
-
         if (Service::doesntHave($service))
             throw new EntityNotFoundException("Service [{$service}] does not exist!");
 

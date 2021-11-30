@@ -3,6 +3,7 @@
 namespace Bit\Skeleton\Entities;
 
 use Bit\Skeleton\Entities\Entity;
+use Bit\Skeleton\Support\Service;
 use Bit\Skeleton\Exceptions\EntityNotFoundException;
 
 class Controller extends Entity
@@ -39,8 +40,8 @@ class Controller extends Entity
      */
     public function __construct($name, $service)
     {
-        if (Service::doesntHave($service))
-            throw new EntityNotFoundException("Service [{$service}] does not exist!");
+        // if (Service::doesntHave($service))
+        //     throw new EntityNotFoundException("Service [{$service}] does not exist!");
 
         $this->name = $name;
         $this->path = service_path($service, 'Http/Controllers', $name.'.php');

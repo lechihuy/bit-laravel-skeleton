@@ -7,9 +7,10 @@ use Illuminate\Filesystem\Filesystem;
 use Bit\Skeleton\Generators\ServiceGenerator;
 
 /**
- * Service class is the Service management for your application.
+ * Class Service
  * 
- * It has a repository that stores all available services. 
+ * It's the Service management for your application.
+ * It has a repository that stores all available services
  * It also offers several helper methods for you to manage all services.
  */
 class Service
@@ -34,11 +35,8 @@ class Service
 
         foreach ($servicePaths as $path) {
             $name = class_basename($path);
-            $entity = Entity::make($name);
 
-            static::add($entity);
-            $entity->bootFeatures();
-            $entity->bootControllers();
+            static::add(Entity::make($name));
         }
     }
 
@@ -65,11 +63,11 @@ class Service
     }
 
     /**
-     * Get all services of the application
+     * Get the service collection of the application.
      * 
      * @return \Illuminate\Support\Collection
      */
-    public static function all()
+    public static function list()
     {
         return static::$services;
     }
