@@ -9,20 +9,6 @@ use Bit\Skeleton\Exceptions\EntityNotFoundException;
 class Feature extends Entity
 {
     /**
-     * The name of feature.
-     * 
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The storage path of feature.
-     * 
-     * @var string
-     */
-    public $path;
-
-    /**
      * The service that owns the feature.
      * 
      * @var string

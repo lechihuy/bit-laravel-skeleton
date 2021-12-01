@@ -9,20 +9,6 @@ use Bit\Skeleton\Exceptions\EntityNotFoundException;
 class Controller extends Entity
 {
     /**
-     * The name of controller.
-     * 
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The storage path of controller.
-     * 
-     * @var string
-     */
-    public $path;
-
-    /**
      * The service that owns the controller.
      * 
      * @var string

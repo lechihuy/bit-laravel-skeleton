@@ -9,20 +9,6 @@ use Illuminate\Filesystem\Filesystem;
 class Service extends Entity
 {
     /**
-     * The name of service.
-     * 
-     * @var string
-     */
-    public $name;
-
-    /**
-     * The storage path of service.
-     * 
-     * @var string
-     */
-    public $path;
-
-    /**
      * Features belongs to the service.
      * 
      * @var \Illuminate\Support\Collection
@@ -109,7 +95,7 @@ class Service extends Entity
         $featureFiles = (new Filesystem)->allFiles($featurePath);
 
         foreach ($featureFiles as $file) {
-            $this->features->push(new Feature(
+            $this->features->push(Feature::make(
                 name: basename($file->getFileName(), '.'.$file->getExtension()),
                 service: $this->name
             ));
@@ -130,7 +116,7 @@ class Service extends Entity
         $controllerFiles = (new Filesystem)->allFiles($controllerPath);
 
         foreach ($controllerFiles as $file) {
-            $this->controllers->push(new Controller(
+            $this->controllers->push(Controller::make(
                 name: basename($file->getFileName(), '.'.$file->getExtension()),
                 service: $this->name
             ));
