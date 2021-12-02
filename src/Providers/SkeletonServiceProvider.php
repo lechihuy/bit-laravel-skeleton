@@ -2,6 +2,7 @@
 
 namespace Bit\Skeleton\Providers;
 
+use Bit\Skeleton\Support\Domain;
 use Bit\Skeleton\Support\Service;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +16,8 @@ class SkeletonServiceProvider extends ServiceProvider
     public function boot()
     {
         Service::boot();
-        
+        Domain::boot();
+
         if ($this->app->runningInConsole()) {
             $this->registerCommands();
         }
@@ -36,6 +38,10 @@ class SkeletonServiceProvider extends ServiceProvider
             \Bit\Skeleton\Console\Commands\FeatureMakeCommand::class,
 
             \Bit\Skeleton\Console\Commands\ControllerMakeCommand::class,
+
+            \Bit\Skeleton\Console\Commands\DomainMakeCommand::class,
+
+            \Bit\Skeleton\Console\Commands\JobMakeCommand::class,
         ]);
     }
 }
