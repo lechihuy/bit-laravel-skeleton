@@ -27,3 +27,17 @@ if (! function_exists('service_classname')) {
         return rtrim("App\\Services\\{$paths}", '\\');
     }
 }
+
+if (! function_exists('domain_path')) {
+    /**
+     * Get the domain path.
+     * 
+     * @param  string[]  $paths,...
+     * @return string
+     */
+    function domain_path(string ...$paths) {
+        $paths = implode('/', $paths);
+        
+        return rtrim(app_path("Domains/{$paths}"), '/');
+    }
+}
