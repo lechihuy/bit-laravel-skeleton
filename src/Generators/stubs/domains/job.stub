@@ -7,7 +7,17 @@ use Bit\Skeleton\Concepts\Job;
 class {{ job }} extends Job
 {
     /**
-     * Execute the feature.
+     * Create a job with arguments are received from the entity that runned it.
+     *
+     * @return void
+    */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
      * 
      * @return mixed
     */ 
