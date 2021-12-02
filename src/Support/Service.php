@@ -111,13 +111,11 @@ class Service
      */
     public static function generate($name)
     {
-        $path = service_path($name);
-
         app(ServiceGenerator::class)->generate($name);
     }
 
     /**
-     * Add the service to the services collection.
+     * Add a service to the services collection.
      * 
      * @param  \Bit\Skeleton\Entities\Service  $service
      * @return void

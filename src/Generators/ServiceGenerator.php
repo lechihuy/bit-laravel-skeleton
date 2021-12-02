@@ -21,7 +21,7 @@ class ServiceGenerator extends Generator
         $this->name = $name;
         $this->basepath = service_path($this->name);
 
-        if (Service::has($this->name))
+        if (Service::has($name))
             throw new EntityAlreadyExistsException('Service already exists!');
 
         $this->makeServiceDirectory();
