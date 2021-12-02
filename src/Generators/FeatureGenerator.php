@@ -51,10 +51,9 @@ class FeatureGenerator extends Generator
     protected function makeFeatureFile()
     {
         $this->files->ensureDirectoryExists($this->basepath());
-
         $this->files->put(
             $this->basepath($this->name.'.php'),
-            $this->getstub('services/feature.stub', [
+            $this->getStub('services/feature.stub', [
                 'service' => $this->service,
                 'feature' => $this->name,
             ])
