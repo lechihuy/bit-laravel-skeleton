@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Domains\{{ domain }}\Jobs;
+
+use Bit\Skeleton\Concepts\Job;
+
+class {{ job }} extends Job
+{
+    /**
+     * Execute the feature.
+     * 
+     * @return mixed
+    */ 
+    public function handle()
+    {
+        //
+    }
+}
