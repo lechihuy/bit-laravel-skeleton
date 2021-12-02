@@ -91,7 +91,8 @@ class Service extends Entity
         $this->features = collect();
         $featurePath = service_path($this->name, 'Features');
 
-        (new Filesystem)->ensureDirectoryExists($featurePath);
+        if (!(new Filesystem)->exists($featurePath)) return;
+
         $featureFiles = (new Filesystem)->allFiles($featurePath);
 
         foreach ($featureFiles as $file) {
@@ -112,7 +113,8 @@ class Service extends Entity
         $this->controllers = collect();
         $controllerPath = service_path($this->name, 'Http/Controllers');
 
-        (new Filesystem)->ensureDirectoryExists($controllerPath);
+        if (!(new Filesystem)->exists($controllerPath)) return;
+
         $controllerFiles = (new Filesystem)->allFiles($controllerPath);
 
         foreach ($controllerFiles as $file) {

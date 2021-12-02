@@ -50,7 +50,8 @@ class Domain extends Entity
         $this->jobs = collect();
         $jobPath = domain_path($this->name, 'Jobs');
 
-        (new Filesystem)->ensureDirectoryExists($jobPath);
+        if (!(new Filesystem)->exists($jobPath)) return;
+
         $jobFiles = (new Filesystem)->allFiles($jobPath);
 
         foreach ($jobFiles as $file) {
