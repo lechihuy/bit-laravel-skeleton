@@ -18,6 +18,7 @@ abstract class TestCase extends BaseTestCase
     public function tearDown(): void
     {
         (new Filesystem)->cleanDirectory(service_path());
+        (new Filesystem)->cleanDirectory(domain_path());
         Mockery::close();
     }
 
