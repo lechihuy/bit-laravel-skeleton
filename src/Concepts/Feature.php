@@ -3,9 +3,12 @@
 namespace Bit\Skeleton\Concepts;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 abstract class Feature
 {
+    use Dispatchable;
+
     /**
      * Run a job.
      * 
@@ -15,6 +18,6 @@ abstract class Feature
      */
     public function run($job, ...$args)
     {
-        return App::call([new $job(...$args), 'handle']);
+        return $job::dispatch(...$args);
     }
 }

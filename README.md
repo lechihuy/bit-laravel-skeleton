@@ -3,4 +3,4 @@ Building the Laravel Skeleton for your application was inspired by [Lucid archit
 
 > This project is a work-in-progress. Code and documentation are currently under development and are subject to change.
 
-Let's view [all documentations](https://bit-laravel-skeleton-docs.vercel.app/)
+Let's view [all documentations](https://bit-laravel-skeleton-docs.vercel.app/).

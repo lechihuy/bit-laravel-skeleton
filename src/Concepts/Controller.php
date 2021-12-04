@@ -15,6 +15,6 @@ abstract class Controller
      */
     protected function serve(string $feature, ...$args)
     {
-        return App::call([new $feature(...$args), 'handle']);
+        return $feature::dispatch(...$args);
     }
 }
